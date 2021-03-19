@@ -1,0 +1,124 @@
+import React, {useState, useEffect} from "react";
+import Note from "./Note";
+import axios from 'axios'
+
+
+const Contact = ({contact}) => {
+  return (
+    <>
+      <tr>
+        <td> {contact.name}</td>
+        <td> {contact.phoneNumber}</td>
+      </tr>
+    </>
+  )
+} 
+const Name = ({name, phoneNumber}) => {
+  return (
+    <>  
+      <tr>
+        <td>  {name} </td>
+        <td> {phoneNumber} </td>
+      </tr>
+    </>
+  )
+}
+
+const Search = ({persons}) => {
+
+  const listItems = persons.map(person => 
+    <Name key = {person.name} name = {person.name} phoneNumber = {person.phoneNumber} />
+  )
+  return (
+    <>  
+      {listItems}
+    </>
+  )
+}
+const App = () => {
+  
+  const [persons, setPersons] = useState([])
+
+  useEffect(() => {axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log(response.data)
+        setPersons(response.data);
+      }) 
+  }, [])
+
+
+  const[newNote, setNewNote] = useState('')
+  const[searchTerm, setSearchTerm] = useState('')
+  const[newName, setNewName] = useState('')
+  const[newPhoneNumber, setNewPhoneNumber] = useState('')
+
+
+  const addContact = (event) => {
+    event.preventDefault()
+    const contactObject = {
+      name : newName,
+      phoneNumber: newPhoneNumber
+    }
+
+    for(var i = 0;i < persons.length;i++) {
+
+      if(persons[i].name === newName) {
+        alert(newName+ " is already added to Phonebook")
+        setNewName('')
+        setNewPhoneNumber('')
+        return ;
+      }
+    }
+    setPersons(persons.concat(contactObject))
+    setNewName('')
+    setNewPhoneNumber('')
+  }
+
+
+  const handleAddName = (event) => {
+    setNewName(event.target.value)
+  }
+  const handleAddPhoneNumber = (event) => {
+    setNewPhoneNumber(event.target.value)
+  }
+  const editSearchTerm = (event) => {
+    setSearchTerm(event.target.value)
+  }
+
+  const dynamicSearch = () => {
+      return (persons.filter(person => person.name.toLowerCase().includes(searchTerm.toLowerCase())))
+  }
+  return (
+    <>
+      <h1> Phonebook </h1>
+      Filter show with <input value = {searchTerm} onChange = {editSearchTerm} /> 
+
+      <h2> Add a new contact </h2>
+      <form >
+        <div>
+          name: <input value = {newName} onChange = {handleAddName}/>
+        </div>
+        <div>
+          number: <input value = {newPhoneNumber} onChange = {handleAddPhoneNumber}/>
+        </div>
+        <div>
+        <button type = "submit" onClick = {addContact} > add </button>
+        </div>
+      </form>
+      <h2> Numbers </h2>
+      <table>
+        <tbody>
+          <tr>
+            <th>Name</th>
+            <th>Number</th>
+          </tr>
+            <Search persons = {dynamicSearch()}/>
+        </tbody>
+      </table> 
+
+    </>
+  )
+}
+
+export default App

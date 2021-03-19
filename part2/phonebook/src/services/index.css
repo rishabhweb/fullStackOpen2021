@@ -1,0 +1,41 @@
+h1 {
+	color : green;
+}
+.note {
+	color: grey;
+	padding-top : 5px;
+	font-size: 15px;
+}
+
+.error {
+	color : red;
+	background: lightgrey;
+	font-size: 20px;
+	border-style: solid;
+	border-radius: 5px;
+	padding: 10px;
+	margin-bottom: 10px;
+}
+.success {
+	color : green;
+	background: lightgrey;
+	font-size: 20px;
+	border-style: solid;
+	border-radius: 5px;
+	padding: 10px;
+	margin-bottom: 10px;
+}
+
+
+button {
+	background-color: #4CAF50; /* Green */
+	border: 5px;
+	border-radius: 10px;
+	color: white;
+	padding: 5px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 13px;
+	margin-top: 2px
+}
